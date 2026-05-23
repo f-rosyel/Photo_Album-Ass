@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Solace — Photo Albums{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="navbar-brand" href="{% url 'albums:album-list' %}">Solace</a>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+      <a href="{% url 'albums:album-create' %}" class="btn btn-outline">+ New Album</a>
+      <span class="nav-user">{{ user.username }}</span>
+      {% if user.is_staff %}<span class="badge-admin">admin</span>{% endif %}
+      <form method="post" action="{% url 'logout' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="btn-link">Sign out</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}" class="btn btn-outline">Sign in</a>
+      <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main class="main-content">
+  {% if messages %}
+    <div class="messages">
+      {% for msg in messages %}
+        <div class="alert alert-{{ msg.tags }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <p>Solace Photo Albums &copy; {% now "Y" %}</p>
+</footer>
+
+</body>
+</html>

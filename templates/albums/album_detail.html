@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}{{ album.title }} — Lumière{% endblock %}
+
+{% block content %}
+<div class="album-header">
+  <div class="album-header-meta">
+    <a href="{% url 'albums:album-list' %}" class="breadcrumb-link">&larr; All Albums</a>
+    <h1 class="page-title">{{ album.title }}</h1>
+    <p class="album-meta-detail">
+      By <strong>{{ album.owner.username }}</strong>
+      &middot; {{ album.photo_count }} photo{{ album.photo_count|pluralize }}
+      &middot; {% if album.is_public %}Public{% else %}<span class="text-muted">Private</span>{% endif %}
+    </p>
+    {% if album.description %}<p class="album-description">{{ album.description }}</p>{% endif %}
+  </div>
+
+  {% if can_manage %}
+  <div class="album-actions">
+    <a href="{% url 'albums:photo-create' album.pk %}" class="btn btn-primary">Upload Photo</a>
+    <a href="{% url 'albums:album-update' album.pk %}" class="btn btn-outline">Edit Album</a>
+    <a href="{% url 'albums:album-delete' album.pk %}" class="btn btn-danger">Delete</a>
+  </div>
+  {% endif %}
+</div>
+
+{% if photos %}
+  <div class="photo-grid">
+    {% for photo in photos %}
+    <a href="{% url 'albums:photo-detail' album.pk photo.pk %}" class="photo-card">
+      <div class="photo-thumb">
+        <img src="{{ photo.image.url }}" alt="{{ photo.title|default:'Photo' }}" loading="lazy" />
+      </div>
+      {% if photo.title %}
+        <p class="photo-title-small">{{ photo.title }}</p>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon">⬡</div>
+    <h2>No photos yet</h2>
+    {% if can_manage %}
+      <a href="{% url 'albums:photo-create' album.pk %}" class="btn btn-primary">Upload First Photo</a>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

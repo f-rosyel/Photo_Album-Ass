@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Register — Lumière{% endblock %}
+
+{% block content %}
+<div class="form-page auth-page">
+  <div class="form-card">
+    <h1 class="form-title">Create Account</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% for err in field.errors %}<p class="form-error">{{ err }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+      {% if form.non_field_errors %}
+        <p class="form-error">{{ form.non_field_errors }}</p>
+      {% endif %}
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary full-width">Create Account</button>
+      </div>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{% if object %}Edit Album{% else %}New Album{% endif %} — Lumière{% endblock %}
+
+{% block content %}
+<div class="form-page">
+  <div class="form-card">
+    <h1 class="form-title">{% if object %}Edit Album{% else %}Create Album{% endif %}</h1>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="form-help">{{ field.help_text }}</p>{% endif %}
+          {% for err in field.errors %}<p class="form-error">{{ err }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          {% if object %}Save Changes{% else %}Create Album{% endif %}
+        </button>
+        <a href="{% if object %}{{ object.get_absolute_url }}{% else %}{% url 'albums:album-list' %}{% endif %}" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

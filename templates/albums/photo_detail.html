@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ photo.title|default:"Photo" }} — Lumière{% endblock %}
+
+{% block content %}
+<div class="photo-detail-page">
+  <div class="photo-nav">
+    <a href="{% url 'albums:album-detail' photo.album.pk %}" class="breadcrumb-link">&larr; {{ photo.album.title }}</a>
+    {% if can_manage %}
+    <div class="photo-actions">
+      <a href="{% url 'albums:photo-update' photo.album.pk photo.pk %}" class="btn btn-outline btn-sm">Edit</a>
+      <a href="{% url 'albums:photo-delete' photo.album.pk photo.pk %}" class="btn btn-danger btn-sm">Delete</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="photo-detail-layout">
+    <div class="photo-detail-image">
+      <img src="{{ photo.image.url }}" alt="{{ photo.title|default:'Photo' }}" />
+    </div>
+    <div class="photo-detail-info">
+      {% if photo.title %}<h2 class="photo-detail-title">{{ photo.title }}</h2>{% endif %}
+      {% if photo.caption %}<p class="photo-detail-caption">{{ photo.caption }}</p>{% endif %}
+      <dl class="photo-meta-list">
+        <dt>Album</dt>
+        <dd><a href="{% url 'albums:album-detail' photo.album.pk %}">{{ photo.album.title }}</a></dd>
+        {% if photo.uploader %}
+          <dt>Uploaded by</dt>
+          <dd>{{ photo.uploader.username }}</dd>
+        {% endif %}
+        <dt>Date</dt>
+        <dd>{{ photo.uploaded_at|date:"N j, Y" }}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Delete Photo — Lumière{% endblock %}
+
+{% block content %}
+<div class="form-page">
+  <div class="form-card danger-card">
+    <h1 class="form-title">Delete Photo</h1>
+    {% if object.image %}
+      <img src="{{ object.image.url }}" alt="" class="delete-preview" />
+    {% endif %}
+    <p>Permanently delete <strong>{{ object.title|default:"this photo" }}</strong>?</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-actions">
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{{ object.get_absolute_url }}" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
