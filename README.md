@@ -1,4 +1,5 @@
-# Lumière — Photo Album Management System
+HEAD
+# Solace — Photo Album Management System
 
 A production-ready Django application for managing photo albums with role-based access control, Cloudinary media storage, and PostgreSQL — deployed on Render.
 
@@ -178,3 +179,6 @@ photo_album/
 | `/accounts/login/` | Django built-in | Sign in |
 | `/accounts/register/` | `RegisterView` | Sign up |
 | `/admin/` | Django admin | Staff only |
+
+# photo-album-system
+f148649 (Initial commit)
